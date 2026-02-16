@@ -1,6 +1,6 @@
 discord-bot/
 │
-├─ bot.py          # 메인 봇 코드
-├─ requirements.txt
-├─ Procfile        # Render에서 Worker 실행용
+├─ bot.py           # Discord 봇 코드
+├─ requirements.txt # 패키지 목록
+├─ Procfile         # Render Background Worker용
 └─ README.md
