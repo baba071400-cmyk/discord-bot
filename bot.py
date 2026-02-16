@@ -23,29 +23,23 @@ async def on_ready():
 @bot.command()
 async def kick(ctx, member: discord.Member):
     member_roles = [role.name for role in member.roles]
-
     if any(role in EXCLUDED_ROLES for role in member_roles):
-        await ctx.send(f"{member}님은 제외 역할이 있어 추방되지 않습니다.")
+        await ctx.send(f"{member}님은 제외 역할이라 추방되지 않습니다.")
     else:
         await member.kick(reason="관리자 명령")
         await ctx.send(f"{member}님이 추방되었습니다.")
 
-# 🎯 음성채널 나가면 자동 추방
+# 음성채널 나가면 자동 추방
 @bot.event
 async def on_voice_state_update(member, before, after):
-    # 음성채널에서 나간 경우
     if before.channel is not None and after.channel is None:
-
-        # 제외 역할 체크
         member_roles = [role.name for role in member.roles]
         if any(role in EXCLUDED_ROLES for role in member_roles):
             print(f"{member}님은 제외 역할이라 자동추방되지 않습니다.")
             return
 
-        # 10초 대기 (실수 방지)
+        # 10초 대기 후 다시 확인 (실수 방지)
         await asyncio.sleep(10)
-
-        # 다시 들어왔는지 확인
         if member.voice is None:
             await member.kick(reason="음성채널 퇴장 자동추방")
             print(f"{member}님이 음성채널을 나가 자동추방되었습니다.")
